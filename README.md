@@ -1,2 +1,22 @@
 # YCSB-elasticsearch-binding
-An Elasticsearch database interface for YCSB which allows remote connections to the different Elasticsearch nodes in a cluster. 
+An Elasticsearch database interface for YCSB which allows remote connections to the different Elasticsearch nodes in a cluster.
+
+Installation guide
+==================
+
+* Download the YCSB project as follows: git clone https://github.com/brianfrankcooper/YCSB.git
+* Remove the already existing Elasticsearch binding: rm -rf YCSB/elasticsearch
+* Include the new YCSB binding within the YCSB directory: git clone https://github.com/arnaudsjs/YCSB-elasticsearch-binding.git elasticsearch
+* Compile everything by executing the following command within the YCSB directory: mvn clean package
+
+Manual
+======
+
+Parameters to set: 
+
+* es.index.key (default: "es.ycsb")
+* cluster.name (default: "es.ycsb.cluster")
+* elasticsearch.newdb (default: "false"): 
+	if true => The elasticsearch index already exists and has to be recreated(remove + create)
+ 	if false => Create the index if it does not yet exist
+* cluster.hostPortPairs (default: "localhost:9300"): A comma-separated list of Elasticsearch node to connect to eg. <host:port>,<host:port>,...
