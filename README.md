@@ -16,7 +16,4 @@ Parameters to set:
 
 * es.index.key (default: "es.ycsb")
 * cluster.name (default: "es.ycsb.cluster")
-* elasticsearch.newdb (default: "false"): 
-	if true => The elasticsearch index already exists and has to be recreated(remove + create)
- 	if false => Create the index if it does not yet exist
 * cluster.hostPortPairs (default: "localhost:9300"): A comma-separated list of Elasticsearch node to connect to eg. <host:port>,<host:port>,...

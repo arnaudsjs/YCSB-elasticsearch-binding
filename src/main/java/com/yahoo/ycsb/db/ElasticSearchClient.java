@@ -27,6 +27,7 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 
 /**
  * ElasticSearch client for YCSB framework.
@@ -39,9 +40,9 @@ import org.elasticsearch.common.settings.Settings;
  */
 public class ElasticSearchClient extends DB {
 
-    public static final String DEFAULT_CLUSTER_NAME = "es.ycsb.cluster";
-    public static final String DEFAULT_INDEX_KEY = "es.ycsb";
-    public static final String DEFAULT_HOST_PORT_PAIR = "localhost:9300";
+    private static final String DEFAULT_CLUSTER_NAME = "es.ycsb.cluster";
+    private static final String DEFAULT_INDEX_KEY = "es.ycsb";
+    private static final String DEFAULT_HOST_PORT_PAIR = "localhost:9300";
     private TransportClient client;
     private String indexKey;
 
@@ -55,7 +56,6 @@ public class ElasticSearchClient extends DB {
         Properties props = getProperties();
         this.indexKey = props.getProperty("es.index.key", DEFAULT_INDEX_KEY);
         String clusterName = props.getProperty("cluster.name", DEFAULT_CLUSTER_NAME);
-        Boolean newdb = Boolean.parseBoolean(props.getProperty("elasticsearch.newdb", "false"));
 	String[] hostsInCluster = props.getProperty("cluster.hostPortPairs", DEFAULT_HOST_PORT_PAIR).split(",");
 
 	Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", clusterName).build();
@@ -66,17 +66,6 @@ public class ElasticSearchClient extends DB {
             int port = Integer.parseInt(hostPortPair.split(":")[1]);
 	    client.addTransportAddress(new InetSocketTransportAddress(host, port));
 	}
-
-
-        if (newdb) {
-            client.admin().indices().prepareDelete(indexKey).execute().actionGet();
-            client.admin().indices().prepareCreate(indexKey).execute().actionGet();
-        } else {
-            boolean exists = client.admin().indices().exists(Requests.indicesExistsRequest(indexKey)).actionGet().isExists();
-            if (!exists) {
-                client.admin().indices().prepareCreate(indexKey).execute().actionGet();
-            }
-        }
     }
 
     @Override
