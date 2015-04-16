@@ -42,7 +42,8 @@ public class ElasticSearchClient extends DB {
 
     private static final String DEFAULT_CLUSTER_NAME = "es.ycsb.cluster";
     private static final String DEFAULT_INDEX_KEY = "es.ycsb";
-    private static final String DEFAULT_HOST_PORT_PAIR = "localhost:9300";
+    private static final String DEFAULT_HOSTS = "localhost";
+    private static final int PORT_NUMBER = 9300;
     private TransportClient client;
     private String indexKey;
 
@@ -56,15 +57,13 @@ public class ElasticSearchClient extends DB {
         Properties props = getProperties();
         this.indexKey = props.getProperty("es.index.key", DEFAULT_INDEX_KEY);
         String clusterName = props.getProperty("cluster.name", DEFAULT_CLUSTER_NAME);
-	String[] hostsInCluster = props.getProperty("cluster.hostPortPairs", DEFAULT_HOST_PORT_PAIR).split(",");
+	String[] hostsInCluster = props.getProperty("hosts", DEFAULT_HOSTS).split(",");
 
 	Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", clusterName).build();
         client = new TransportClient(settings);
 	
-	for(String hostPortPair : hostsInCluster){
-            String host = hostPortPair.split(":")[0];
-            int port = Integer.parseInt(hostPortPair.split(":")[1]);
-	    client.addTransportAddress(new InetSocketTransportAddress(host, port));
+	for(String host : hostsInCluster){
+	    client.addTransportAddress(new InetSocketTransportAddress(host, PORT_NUMBER));
 	}
     }
 

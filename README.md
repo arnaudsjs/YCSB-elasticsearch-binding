@@ -4,7 +4,7 @@ An Elasticsearch database interface for YCSB which allows remote connections to 
 Installation guide
 ==================
 
-* Install Elasticsearch version: 1.5.1
+!!! Install Elasticsearch version: 1.5.1 !!!
 
 * Download the YCSB project as follows: git clone https://github.com/brianfrankcooper/YCSB.git
 * Remove the already existing Elasticsearch binding: rm -rf YCSB/elasticsearch
@@ -18,4 +18,4 @@ Parameters to set:
 
 * es.index.key (default: "es.ycsb")
 * cluster.name (default: "es.ycsb.cluster")
-* cluster.hostPortPairs (default: "localhost:9300"): A comma-separated list of Elasticsearch node to connect to eg. <host:port>,<host:port>,...
+* hosts (default: "localhost"): A comma-separated list of Elasticsearch nodes to connect to eg. <host1>,<host2>,...
