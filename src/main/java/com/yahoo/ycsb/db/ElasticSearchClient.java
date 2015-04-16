@@ -220,7 +220,7 @@ public class ElasticSearchClient extends DB {
             final SearchResponse response = client.prepareSearch(indexKey)
                     .setTypes(table)
                     .setQuery(matchAllQuery())
-                    .setFilter(filter)
+                    .setPostFilter(filter)
                     .setSize(recordcount)
                     .execute()
                     .actionGet();
